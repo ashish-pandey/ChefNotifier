@@ -61,7 +61,7 @@ function checkNotification(username , storedTime){
 			//console.log(mresult);
 			$mtable = $(mresult).find('table').eq(0);
 			$allRows = $($mtable).find('tr');
-			var problemSet;
+			var problemSet = {};
 			for(i = 1;i<$allRows.length;i++){
 				s = $($allRows[i]).text();
 				timest_prob = getTimestampAndProbName(s);
@@ -72,8 +72,9 @@ function checkNotification(username , storedTime){
 				if(problemSet[probName]) continue; //more than one attempt for the probem
 				problemSet[probName] = true;
 			}
-			if(problemSet){
-				msg = problemSet.length + " new problems attempted by " + username;
+			console.log(problemSet);
+			if(Object.keys(problemSet).length > 0){
+				msg = Object.keys(problemSet).length + " new problems attempted by " + username;
 				options['message'] = msg;
 				chrome.notifications.create(options , callback);
 				chrome.notifications.onButtonClicked.addListener(function(){
