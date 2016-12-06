@@ -14,19 +14,37 @@ function callback(){
 
 function getTimestampAndProbName(s){
 	words = s.split(" ");
-	hourMin = words[0].split(":");
-	hour = parseInt(hourMin[0]);
-	min = parseInt(hourMin[1]);
-	if(words[1]=='PM') hour += 12;
-	dateStr = words[2].substring(0 , 8);
-	probname = words[2].substring(8 , 14);
-	dateItem = dateStr.split('/');
-	day = parseInt(dateItem[0]);
-	month = parseInt(dateItem[1]);
-	year = parseInt('20' + dateItem[2]);
-	//console.log(dateStr + " " + words[0] + " " + probname + " " + hour + " " + min + " " + day + " " + month + " " + year);
-	timest = new Date(year , month , day , hour , min);
-	return [timest.getTime() , probname];
+	curTimeSt = new Date().getTime();
+	if(words[1] == 'sec'){
+		timest =curTimeSt - parseInt(words[0])*1000;
+		probName = words[2].substring(3 , 9);
+		return [timest , probName];
+	}
+	else if(words[1] == 'min'){
+		timest = curTimeSt - parseInt(words[0])*60000;
+		probName = words[2].substring(3 , 9);
+		return [timest , probName];
+	}
+	else if(words[1] == 'hours'){
+		timest = curTimeSt - parseInt(words[0])*3600*1000;
+		probName = words[2].substring(3 , 9);
+		return [timest , probName];
+	}
+	else{
+		hourMin = words[0].split(":");
+		hour = parseInt(hourMin[0]);
+		min = parseInt(hourMin[1]);
+		if(words[1]=='PM') hour += 12;
+		dateStr = words[2].substring(0 , 8);
+		probname = words[2].substring(8 , 14);
+		dateItem = dateStr.split('/');
+		day = parseInt(dateItem[0]);
+		month = parseInt(dateItem[1]);
+		year = parseInt('20' + dateItem[2]);
+		//console.log(dateStr + " " + words[0] + " " + probname + " " + hour + " " + min + " " + day + " " + month + " " + year);
+		timest = new Date(year , month , day , hour , min);
+		return [timest.getTime() , probname];
+	}
 }
 
 
